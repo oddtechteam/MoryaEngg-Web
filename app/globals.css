@@ -1,0 +1,319 @@
+@import "tailwindcss";
+
+:root {
+  /* Canvas (light editorial system) */
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f4f6fb;
+  --color-surface: #eef1f8;
+  --color-text: #101828;
+  --color-muted: #5b6478;
+  --color-accent: #2f6feb;
+  --color-accent-deep: #1d4fc7;
+  --color-gold: #f5a524;
+  --color-line: rgba(16, 24, 40, 0.1);
+  --color-scrim: #0b1730;
+
+  /* Navy — reserved for a handful of dramatic full-bleed sections
+     (hero, quality, contact, footer) that intentionally break the
+     light canvas for contrast, mirroring the reference system. */
+  --color-navy: #0b1730;
+  --color-navy-deep: #060c1c;
+  --color-on-navy: #edf1fa;
+  --color-on-navy-muted: #c7d0e4;
+  --color-on-navy-blue: #8aa8ff;
+  --color-on-navy-line: rgba(237, 241, 250, 0.14);
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-bg-secondary: var(--color-bg-secondary);
+  --color-surface: var(--color-surface);
+  --color-text: var(--color-text);
+  --color-muted: var(--color-muted);
+  --color-accent: var(--color-accent);
+  --color-accent-deep: var(--color-accent-deep);
+  --color-gold: var(--color-gold);
+  --color-line: var(--color-line);
+  --color-scrim: var(--color-scrim);
+
+  --color-navy: var(--color-navy);
+  --color-navy-deep: var(--color-navy-deep);
+  --color-on-navy: var(--color-on-navy);
+  --color-on-navy-muted: var(--color-on-navy-muted);
+  --color-on-navy-blue: var(--color-on-navy-blue);
+  --color-on-navy-line: var(--color-on-navy-line);
+
+  --font-display: var(--font-playfair);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-plex-mono);
+
+  --breakpoint-xs: 22.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+body {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-navy);
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+  opacity: 0.4;
+  border: 2px solid var(--color-bg-secondary);
+}
+
+/* Grain / noise texture overlay */
+.noise-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  opacity: 0.02;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Technical grid backdrop — light sections (dark hairlines) */
+.tech-grid {
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.tech-grid-fine {
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Technical grid backdrop — navy sections (light hairlines) */
+.tech-grid-navy {
+  background-image:
+    linear-gradient(to right, var(--color-on-navy-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-on-navy-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.tech-grid-fine-navy {
+  background-image:
+    linear-gradient(to right, var(--color-on-navy-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-on-navy-line) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Custom cursor */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 100;
+  border-radius: 9999px;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+.cursor-dot,
+.cursor-ring {
+  mix-blend-mode: difference;
+}
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: #ffffff;
+}
+.cursor-ring {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  text-transform: uppercase;
+  transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+
+/* Utility: link underline reveal */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Measurement tick marks */
+.tick-marks {
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--color-line) 0,
+    var(--color-line) 1px,
+    transparent 1px,
+    transparent 24px
+  );
+}
+
+/* Marquee (customer / trust strip) */
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee-scroll 32s linear infinite;
+}
+
+/* Slow decorative rotation for gear/vector watermarks */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-slow 50s linear infinite;
+}
+
+/* Slow floating drift for particle accents */
+@keyframes float-particle {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translateY(-14px);
+    opacity: 0.85;
+  }
+}
+.animate-float {
+  animation: float-particle 8s ease-in-out infinite;
+}
+
+/* Slow vertical scan sweep for technical/precision card accents.
+   Animates `top` (resolves against the positioned parent's real height)
+   rather than `transform: translateY` (which resolves against the
+   element's own height and would not travel the full container). */
+@keyframes scan-sweep {
+  0% {
+    top: -15%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+.animate-scan {
+  animation: scan-sweep 4.5s ease-in-out infinite;
+}
+
+/* Slow breathing glow for rings/halos */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.035);
+  }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 5s ease-in-out infinite;
+}
+
+/* Slow drifting radial glow position for ambient backgrounds */
+@keyframes glow-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-3%, 3%);
+  }
+}
+.animate-glow-drift {
+  animation: glow-drift 14s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-spin-slow,
+  .animate-float,
+  .animate-scan,
+  .animate-pulse-glow,
+  .animate-glow-drift {
+    animation: none;
+  }
+}
+
+@media (max-width: 767px), (pointer: coarse) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}
