@@ -11,7 +11,6 @@ export const navLinks = [
   { index: "04", label: "Machines", href: "/machines" },
   { index: "05", label: "Projects", href: "/projects" },
   { index: "06", label: "Quality", href: "/quality" },
-  { index: "07", label: "Contact", href: "/contact" },
 ];
 
 export const heroStats = [

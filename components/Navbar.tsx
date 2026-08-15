@@ -134,7 +134,7 @@ export default function Navbar() {
           <Link
             href="/"
             data-nav-item
-            className="group flex items-center gap-2.5 font-display font-semibold leading-none tracking-tight text-text"
+            className="hidden sm:flex group items-center gap-2.5 font-display font-semibold leading-none tracking-tight text-text"
             data-cursor="interactive"
           >
             <span ref={logoBadgeRef} className="flex shrink-0 items-center">
@@ -144,11 +144,10 @@ export default function Navbar() {
 
           <Link
             href="/"
-            aria-hidden="true"
-            tabIndex={-1}
-            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 sm:hidden"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 sm:hidden"
+            data-cursor="interactive"
           >
-            <Image src="/images/company/me-logo.png" alt="" width={150} height={100} className="h-8 w-auto" />
+            <Image src="/images/company/me-logo.png" alt="Morya Engineering Works" width={150} height={100} className="h-8 w-auto" />
           </Link>
 
           <nav
