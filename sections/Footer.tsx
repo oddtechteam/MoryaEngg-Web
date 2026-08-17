@@ -10,7 +10,7 @@ import MagneticButton from "@/components/MagneticButton";
 export default function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-on-navy-line bg-navy">
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
       <div className="tech-grid-navy pointer-events-none absolute inset-0 opacity-20" />
       <div className="pointer-events-none absolute -top-40 right-0 h-96 w-96 rounded-full bg-on-navy-blue/10 blur-[120px]" />
 
@@ -25,7 +25,7 @@ export default function Footer() {
               as={Link}
               href="/contact"
               data-cursor="interactive"
-              className="inline-flex items-center gap-2 bg-gold px-6 py-3.5 text-sm font-medium text-navy transition-opacity hover:opacity-90"
+              className="inline-flex items-center gap-2 bg-accent px-6 py-3.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
             >
               Request a Quote <ArrowUpRight size={14} />
             </MagneticButton>

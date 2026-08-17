@@ -8,6 +8,7 @@ import { Menu, X, ArrowUpRight } from "lucide-react";
 import { navLinks } from "@/lib/content";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import MagneticButton from "./MagneticButton";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -180,7 +181,8 @@ export default function Navbar() {
             })}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-3">
+            <ThemeToggle data-nav-item />
             <MagneticButton
               as={Link}
               href="/contact"
@@ -192,20 +194,23 @@ export default function Navbar() {
             </MagneticButton>
           </div>
 
-          <button
-            className="lg:hidden text-text"
-            onClick={() => setOpen(true)}
-            aria-label="Open menu"
-            data-cursor="interactive"
-          >
-            <Menu size={24} />
-          </button>
+          <div className="ml-auto flex items-center gap-2 lg:hidden">
+            <ThemeToggle />
+            <button
+              className="text-text"
+              onClick={() => setOpen(true)}
+              aria-label="Open menu"
+              data-cursor="interactive"
+            >
+              <Menu size={24} />
+            </button>
+          </div>
 
           {/* Scroll progress indicator */}
           <div className="pointer-events-none absolute inset-x-3 bottom-0 h-[2px] overflow-hidden rounded-full bg-line/60 sm:inset-x-5">
             <div
               ref={progressRef}
-              className="h-full w-full origin-left rounded-full bg-gradient-to-r from-accent to-gold"
+              className="h-full w-full origin-left rounded-full bg-gradient-to-r from-accent to-accent-deep"
               style={{ transform: "scaleX(0)" }}
             />
           </div>
@@ -220,9 +225,12 @@ export default function Navbar() {
       >
         <div className="flex items-center justify-between px-5 py-6 border-b border-on-navy-line">
           <Image src="/images/company/me-logo.png" alt="Morya Engineering Works" width={150} height={100} className="h-8 w-auto" />
-          <button onClick={() => setOpen(false)} aria-label="Close menu" className="text-on-navy">
-            <X size={26} />
-          </button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle variant="navy" />
+            <button onClick={() => setOpen(false)} aria-label="Close menu" className="text-on-navy">
+              <X size={26} />
+            </button>
+          </div>
         </div>
         <nav className="flex flex-col px-6 py-10 gap-2">
           {navLinks.map((link) => (
@@ -242,7 +250,7 @@ export default function Navbar() {
           <Link
             href="/contact"
             onClick={() => setOpen(false)}
-            className="inline-flex items-center justify-center gap-2 bg-gold text-navy px-6 py-4 text-sm font-medium"
+            className="inline-flex items-center justify-center gap-2 bg-accent text-white px-6 py-4 text-sm font-medium"
           >
             Get In Touch <ArrowUpRight size={16} />
           </Link>

@@ -1,27 +1,65 @@
 @import "tailwindcss";
 
 :root {
-  /* Canvas (light editorial system) */
-  --color-bg: #ffffff;
-  --color-bg-secondary: #f4f6fb;
-  --color-surface: #eef1f8;
-  --color-text: #101828;
-  --color-muted: #5b6478;
+  /* Canvas — dark theme (primary / default) */
+  --color-bg: #0a0c10;
+  --color-bg-secondary: #12151c;
+  --color-surface: #171a22;
+  --color-text: #edf1fa;
+  --color-muted: #98a2b3;
   --color-accent: #2f6feb;
   --color-accent-deep: #1d4fc7;
-  --color-gold: #f5a524;
-  --color-line: rgba(16, 24, 40, 0.1);
-  --color-scrim: #0b1730;
+  --color-line: rgba(237, 241, 250, 0.12);
+  --color-scrim: #05070a;
 
-  /* Navy — reserved for a handful of dramatic full-bleed sections
-     (hero, quality, contact, footer) that intentionally break the
-     light canvas for contrast, mirroring the reference system. */
+  /* Navy — the dramatic full-bleed "accent band" used by hero, quality,
+     contact, footer. Stays dark in both themes (a deliberate, intentional
+     contrast band rather than a literal invert), but its exact tone still
+     shifts subtly per theme so it never looks hardcoded. */
   --color-navy: #0b1730;
   --color-navy-deep: #060c1c;
   --color-on-navy: #edf1fa;
   --color-on-navy-muted: #c7d0e4;
   --color-on-navy-blue: #8aa8ff;
   --color-on-navy-line: rgba(237, 241, 250, 0.14);
+
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  /* Canvas — light theme */
+  --color-bg: #f8f9fb;
+  --color-bg-secondary: #eef1f8;
+  --color-surface: #ffffff;
+  --color-text: #101828;
+  --color-muted: #5b6478;
+  --color-line: rgba(16, 24, 40, 0.1);
+  --color-scrim: #0b1730;
+
+  --color-navy: #10131b;
+  --color-navy-deep: #0a0c11;
+
+  color-scheme: light;
+}
+
+/* Pre-hydration / no-JS fallback: mirror the light overrides when the
+   system prefers light and no explicit choice has been recorded yet. The
+   inline theme script in <head> normally sets data-theme before paint. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]):not([data-theme="light"]) {
+    --color-bg: #f8f9fb;
+    --color-bg-secondary: #eef1f8;
+    --color-surface: #ffffff;
+    --color-text: #101828;
+    --color-muted: #5b6478;
+    --color-line: rgba(16, 24, 40, 0.1);
+    --color-scrim: #0b1730;
+
+    --color-navy: #10131b;
+    --color-navy-deep: #0a0c11;
+
+    color-scheme: light;
+  }
 }
 
 @theme inline {
@@ -32,7 +70,6 @@
   --color-muted: var(--color-muted);
   --color-accent: var(--color-accent);
   --color-accent-deep: var(--color-accent-deep);
-  --color-gold: var(--color-gold);
   --color-line: var(--color-line);
   --color-scrim: var(--color-scrim);
 
@@ -43,8 +80,8 @@
   --color-on-navy-blue: var(--color-on-navy-blue);
   --color-on-navy-line: var(--color-on-navy-line);
 
-  --font-display: var(--font-playfair);
-  --font-sans: var(--font-inter);
+  --font-display: var(--font-space-grotesk);
+  --font-sans: var(--font-space-grotesk);
   --font-mono: var(--font-plex-mono);
 
   --breakpoint-xs: 22.5rem;
@@ -66,6 +103,22 @@ body {
   color: var(--color-text);
 }
 
+/* Smooth theme switch — scoped to color-relevant properties only so it
+   never fights component-level transition-* utilities. Skipped entirely
+   for reduced-motion users, who get an instant swap instead. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+  body,
+  header,
+  section,
+  footer,
+  nav {
+    transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+  }
+}
+
 body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   overflow-x: hidden;
@@ -73,8 +126,8 @@ body {
 }
 
 ::selection {
-  background: var(--color-gold);
-  color: var(--color-navy);
+  background: var(--color-accent);
+  color: var(--color-on-navy);
 }
 
 h1,
@@ -82,7 +135,7 @@ h2,
 h3,
 h4,
 .font-display {
-  font-family: var(--font-display), ui-serif, Georgia, serif;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Scrollbar */
@@ -300,13 +353,36 @@ h4,
   animation: glow-drift 14s ease-in-out infinite;
 }
 
+/* Slow diagonal light streak sweeping across a photo, for a cinematic
+   HUD-glass feel. Very low opacity, long cycle — meant to be barely
+   noticed rather than a flashy effect. */
+@keyframes light-sweep {
+  0%,
+  92%,
+  100% {
+    transform: translateX(-120%) skewX(-12deg);
+    opacity: 0;
+  }
+  4% {
+    opacity: 0.5;
+  }
+  18% {
+    transform: translateX(220%) skewX(-12deg);
+    opacity: 0;
+  }
+}
+.animate-light-sweep {
+  animation: light-sweep 9s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
   .animate-spin-slow,
   .animate-float,
   .animate-scan,
   .animate-pulse-glow,
-  .animate-glow-drift {
+  .animate-glow-drift,
+  .animate-light-sweep {
     animation: none;
   }
 }

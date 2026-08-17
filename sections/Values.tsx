@@ -49,7 +49,7 @@ export default function Values() {
         <span className="mb-4 block font-mono text-xs tracking-[0.3em] text-on-navy-blue">08 / Principles</span>
         <h2 className="mb-16 max-w-2xl font-display font-medium leading-[1.1] text-on-navy" style={{ fontSize: "clamp(2.25rem, 5vw, 4rem)" }}>
           <span className="block overflow-hidden pb-[0.15em]"><span data-values-heading className="block">Built on</span></span>
-          <span className="block overflow-hidden pb-[0.15em]"><span data-values-heading className="block text-gold">discipline.</span></span>
+          <span className="block overflow-hidden pb-[0.15em]"><span data-values-heading className="block text-accent">discipline.</span></span>
         </h2>
 
         <div data-values-list className="flex flex-col">

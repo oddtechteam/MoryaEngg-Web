@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { BadgeCheck } from "lucide-react";
 import { gsap } from "@/lib/gsap";
-import { textReveal, staggerReveal, imageReveal } from "@/lib/animations";
+import { textReveal, staggerReveal, imageReveal, fadeUp } from "@/lib/animations";
 import { qualityInstruments, certifications } from "@/lib/content";
 import GalleryLightbox from "@/components/GalleryLightbox";
 
@@ -21,13 +21,7 @@ export default function Quality() {
       textReveal("[data-q-heading]", { trigger: rootRef.current });
       staggerReveal("[data-q-instrument]", { trigger: "[data-q-instruments]", stagger: 0.08 });
       imageReveal(bannerWrapRef.current, bannerRef.current, { trigger: bannerWrapRef.current });
-      gsap.from("[data-q-cert]", {
-        opacity: 0,
-        y: 24,
-        duration: 0.9,
-        ease: "power3.out",
-        scrollTrigger: { trigger: "[data-q-cert]", start: "top 85%" },
-      });
+      fadeUp("[data-q-cert]", { trigger: "[data-q-cert]", start: "top 85%", y: 24 });
     }, rootRef);
     return () => ctx.revert();
   }, []);
@@ -50,7 +44,7 @@ export default function Quality() {
             <ul data-q-instruments className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {qualityInstruments.map((tool) => (
                 <li data-q-instrument key={tool} className="flex items-center gap-3 border-b border-on-navy-line pb-3 text-sm text-on-navy-muted">
-                  <span className="h-1.5 w-1.5 shrink-0 bg-gold" />
+                  <span className="h-1.5 w-1.5 shrink-0 bg-accent" />
                   {tool}
                 </li>
               ))}
@@ -62,9 +56,9 @@ export default function Quality() {
               data-q-cert
               onClick={() => setCertOpen(true)}
               data-cursor="view"
-              className="group relative flex h-full items-center gap-4 border border-on-navy-line bg-white/[0.03] p-6 text-left transition-colors hover:border-gold"
+              className="group relative flex h-full items-center gap-4 border border-on-navy-line bg-white/[0.03] p-6 text-left transition-colors hover:border-accent"
             >
-              <BadgeCheck size={32} className="shrink-0 text-gold" />
+              <BadgeCheck size={32} className="shrink-0 text-accent" />
               <div>
                 <span className="block font-display text-lg text-on-navy">{cert.name}</span>
                 <span className="block text-xs text-on-navy-muted">Scope: {cert.scope}</span>

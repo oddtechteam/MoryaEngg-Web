@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { gsap } from "@/lib/gsap";
+import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { textReveal, staggerReveal, imageReveal, parallax } from "@/lib/animations";
 import { aboutContent, heroStats } from "@/lib/content";
 import CornerBrackets from "@/components/CornerBrackets";
@@ -27,15 +27,19 @@ export default function AboutTeaser() {
       staggerReveal("[data-at-fact]", { trigger: "[data-at-facts]", stagger: 0.08 });
       imageReveal(imgWrapRef.current, imgRef.current, { trigger: imgWrapRef.current });
       parallax(imgRef.current, { trigger: rootRef.current!, amount: 10 });
-      gsap.from("[data-corner]", {
-        opacity: 0,
-        scale: 0.5,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: "power2.out",
-        delay: 0.5,
-        scrollTrigger: { trigger: imgWrapRef.current, start: "top 80%" },
-      });
+      if (prefersReducedMotion()) {
+        gsap.set("[data-corner]", { opacity: 1, scale: 1 });
+      } else {
+        gsap.from("[data-corner]", {
+          opacity: 0,
+          scale: 0.5,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: "power2.out",
+          delay: 0.5,
+          scrollTrigger: { trigger: imgWrapRef.current, start: "top 80%" },
+        });
+      }
     }, rootRef);
     return () => ctx.revert();
   }, []);
@@ -55,7 +59,7 @@ export default function AboutTeaser() {
               />
             </div>
             <div className="absolute inset-0 rounded-3xl border border-line" />
-            <CornerBrackets color="var(--color-gold)" />
+            <CornerBrackets color="var(--color-accent)" />
           </div>
 
           <div className="lg:col-span-7">

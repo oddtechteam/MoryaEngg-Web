@@ -36,7 +36,7 @@ export default function CTABanner() {
             href="/contact"
             data-ctab-cta
             data-cursor="interactive"
-            className="inline-flex items-center gap-2 bg-gold px-7 py-4 text-sm font-medium text-navy hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-2 bg-accent px-7 py-4 text-sm font-medium text-white hover:opacity-90 transition-opacity"
           >
             Request a Quote <ArrowUpRight size={14} />
           </MagneticButton>

@@ -41,7 +41,7 @@ export default function Contact() {
               href="#contact-form"
               data-contact-cta
               data-cursor="interactive"
-              className="inline-flex items-center gap-2 bg-gold text-navy px-7 py-4 text-sm font-medium hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 bg-accent text-white px-7 py-4 text-sm font-medium hover:opacity-90 transition-opacity"
             >
               Request a Quote <ArrowUpRight size={14} />
             </MagneticButton>

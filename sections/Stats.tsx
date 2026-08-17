@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
-import { counterAnimation } from "@/lib/animations";
+import { counterAnimation, staggerReveal } from "@/lib/animations";
 import { heroStats } from "@/lib/content";
 
 export default function Stats() {
@@ -21,14 +21,7 @@ export default function Stats() {
         });
       });
 
-      gsap.from("[data-stat-item]", {
-        opacity: 0,
-        y: 24,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: rootRef.current, start: "top 90%" },
-      });
+      staggerReveal("[data-stat-item]", { trigger: rootRef.current, start: "top 90%", stagger: 0.1, y: 24 });
     }, rootRef);
     return () => ctx.revert();
   }, []);

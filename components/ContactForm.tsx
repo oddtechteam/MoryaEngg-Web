@@ -65,7 +65,7 @@ export default function ContactForm() {
   if (status === "success") {
     return (
       <div className="flex flex-col items-start gap-4 border border-on-navy-line bg-white/[0.03] p-10 text-left">
-        <CheckCircle2 size={40} className="text-gold" />
+        <CheckCircle2 size={40} className="text-accent" />
         <h3 className="font-display text-2xl text-on-navy">Enquiry sent.</h3>
         <p className="text-sm text-on-navy-muted">
           Thank you — our engineering team will get back to you shortly. For urgent requirements, reach us directly
@@ -177,7 +177,7 @@ export default function ContactForm() {
         type="submit"
         disabled={status === "loading"}
         data-cursor="interactive"
-        className="mt-2 inline-flex w-fit items-center gap-2 bg-gold px-8 py-4 text-sm font-medium text-navy transition-opacity hover:opacity-90 disabled:opacity-60"
+        className="mt-2 inline-flex w-fit items-center gap-2 bg-accent px-8 py-4 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60"
       >
         {status === "loading" ? (
           <>
