@@ -84,11 +84,33 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!open) return;
-    gsap.fromTo(
-      "[data-mobile-link]",
-      { yPercent: 110, opacity: 0 },
-      { yPercent: 0, opacity: 1, duration: 0.7, stagger: 0.06, ease: "power3.out", delay: 0.15 }
-    );
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open || prefersReducedMotion()) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        "[data-mobile-fade]",
+        { opacity: 0, y: -10 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+      );
+      gsap.fromTo(
+        "[data-mobile-link]",
+        { yPercent: 110, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: 0.7, stagger: 0.06, ease: "power3.out", delay: 0.15 }
+      );
+      gsap.fromTo(
+        "[data-mobile-cta]",
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.5 }
+      );
+    });
+    return () => ctx.revert();
   }, [open]);
 
   // Sliding hover highlight behind nav links
@@ -219,38 +241,76 @@ export default function Navbar() {
 
       {/* Mobile fullscreen menu */}
       <div
-        className={`fixed inset-0 z-[70] bg-navy tech-grid-navy transition-opacity duration-500 lg:hidden ${
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site navigation"
+        className={`fixed inset-0 z-[70] flex flex-col bg-navy tech-grid-navy transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden ${
+          open ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"
         }`}
       >
-        <div className="flex items-center justify-between px-5 py-6 border-b border-on-navy-line">
+        <div data-mobile-fade className="flex items-center justify-between border-b border-on-navy-line px-6 py-6">
           <Image src="/images/company/me-logo.png" alt="Morya Engineering Works" width={150} height={100} className="h-8 w-auto" />
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <ThemeToggle variant="navy" />
-            <button onClick={() => setOpen(false)} aria-label="Close menu" className="text-on-navy">
-              <X size={26} />
+            <button
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+              data-cursor="interactive"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-on-navy-line text-on-navy-muted transition-colors hover:border-accent/60 hover:text-on-navy"
+            >
+              <X size={18} />
             </button>
           </div>
         </div>
-        <nav className="flex flex-col px-6 py-10 gap-2">
-          {navLinks.map((link) => (
-            <div key={link.href} className="overflow-hidden">
-              <Link
-                href={link.href}
-                data-mobile-link
-                onClick={() => setOpen(false)}
-                className="flex items-baseline py-3 border-b border-on-navy-line font-display text-4xl text-on-navy xs:text-5xl"
-              >
-                {link.label}
-              </Link>
-            </div>
-          ))}
+
+        <span
+          data-mobile-fade
+          className="px-6 pt-8 font-mono text-[11px] tracking-[0.3em] text-on-navy-muted/60"
+        >
+          MENU
+        </span>
+
+        <nav className="flex flex-1 flex-col justify-center px-6">
+          {navLinks.map((link, i) => {
+            const isActive = pathname === link.href;
+            return (
+              <div key={link.href} className="overflow-hidden border-b border-on-navy-line">
+                <Link
+                  href={link.href}
+                  data-mobile-link
+                  data-active={isActive}
+                  onClick={() => setOpen(false)}
+                  data-cursor="interactive"
+                  className={`group flex items-center justify-between gap-4 py-4 transition-colors ${
+                    isActive ? "text-accent" : "text-on-navy hover:text-accent"
+                  }`}
+                >
+                  <span className="flex items-baseline gap-4">
+                    <span className="font-mono text-xs text-on-navy-muted/60 transition-colors group-hover:text-accent">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="font-display text-4xl leading-none xs:text-5xl">{link.label}</span>
+                  </span>
+                  <ArrowUpRight
+                    size={22}
+                    className={`shrink-0 transition-all duration-300 ${
+                      isActive
+                        ? "translate-x-0 opacity-100"
+                        : "-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
+                    }`}
+                  />
+                </Link>
+              </div>
+            );
+          })}
         </nav>
-        <div className="px-6 mt-6 flex flex-col gap-4">
+
+        <div data-mobile-cta className="border-t border-on-navy-line px-6 py-6">
           <Link
             href="/contact"
             onClick={() => setOpen(false)}
-            className="inline-flex items-center justify-center gap-2 bg-accent text-white px-6 py-4 text-sm font-medium"
+            data-cursor="interactive"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-4 text-sm font-medium text-white transition-colors hover:bg-accent-deep"
           >
             Get In Touch <ArrowUpRight size={16} />
           </Link>
